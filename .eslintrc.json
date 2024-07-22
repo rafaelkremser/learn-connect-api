@@ -1,7 +1,8 @@
 {
     "rules": {
-        "no-useless-constructor": "error",
-        "no-unused-vars": "warn",
-        "no-undef": "warn"
+      "no-useless-constructor": "off",
+      "no-new": "off",
+      "no-unused-vars": "warn",
+      "no-undef": "warn"
     }
 }
