@@ -1,41 +1,39 @@
-import { PaginationParams } from '@/core/repositories/pagination-params';
-import { QuestionCommentsRepository } from '@/domain/forum/application/repositories/question-comments-repository';
-import { QuestionComment } from '@/domain/forum/enterprise/entities/question-comment';
+import { PaginationParams } from '@/core/repositories/pagination-params'
+import { QuestionCommentsRepository } from '@/domain/forum/application/repositories/question-comments-repository'
+import { QuestionComment } from '@/domain/forum/enterprise/entities/question-comment'
 
 export class InMemoryQuestionCommentsRepository
-    implements QuestionCommentsRepository
+  implements QuestionCommentsRepository
 {
-    public items: QuestionComment[] = [];
+  public items: QuestionComment[] = []
 
-    async findById(id: string) {
-        const questionComment = this.items.find(
-            (item) => item.id.toString() === id
-        );
+  async findById(id: string) {
+    const questionComment = this.items.find((item) => item.id.toString() === id)
 
-        if (!questionComment) {
-            return null;
-        }
-
-        return questionComment;
+    if (!questionComment) {
+      return null
     }
 
-    async findManyByQuestionId(questiondId: string, params: PaginationParams) {
-        const questionComments = this.items
-            .filter((item) => item.questionId.toString() === questiondId)
-            .slice((params.page - 1) * 20, params.page * 20);
+    return questionComment
+  }
 
-        return questionComments;
-    }
+  async findManyByQuestionId(questiondId: string, params: PaginationParams) {
+    const questionComments = this.items
+      .filter((item) => item.questionId.toString() === questiondId)
+      .slice((params.page - 1) * 20, params.page * 20)
 
-    async create(questionComment: QuestionComment) {
-        this.items.push(questionComment);
-    }
+    return questionComments
+  }
 
-    async delete(questionComment: QuestionComment) {
-        const itemIndex = this.items.findIndex(
-            (item) => item.id === questionComment.id
-        );
+  async create(questionComment: QuestionComment) {
+    this.items.push(questionComment)
+  }
 
-        this.items.splice(itemIndex, 1);
-    }
+  async delete(questionComment: QuestionComment) {
+    const itemIndex = this.items.findIndex(
+      (item) => item.id === questionComment.id,
+    )
+
+    this.items.splice(itemIndex, 1)
+  }
 }
