@@ -14,7 +14,7 @@ export interface QuestionProps {
   slug: Slug
   bestAnswerId?: UniqueEntityID
   createdAt: Date
-  updatedAt?: Date
+  updatedAt?: Date | null
 }
 
 export class Question extends AggregateRoot<QuestionProps> {
@@ -98,7 +98,7 @@ export class Question extends AggregateRoot<QuestionProps> {
 
   static create(
     props: Optional<QuestionProps, 'attachments' | 'slug' | 'createdAt'>,
-    id?: UniqueEntityID,
+    id?: UniqueEntityID
   ) {
     const question = new Question(
       {
@@ -107,7 +107,7 @@ export class Question extends AggregateRoot<QuestionProps> {
         slug: props.slug ?? Slug.createFromText(props.title),
         createdAt: props.createdAt ?? new Date(),
       },
-      id,
+      id
     )
 
     return question
