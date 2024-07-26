@@ -21,7 +21,7 @@ type CommentOnQuestionUseCaseResponse = Either<
 export class CommentOnQuestionUseCase {
   constructor(
     private questionCommentsRepository: QuestionCommentsRepository,
-    private questionRepository: QuestionsRepository,
+    private questionsRepository: QuestionsRepository
   ) {}
 
   async handle({
@@ -29,7 +29,7 @@ export class CommentOnQuestionUseCase {
     authorId,
     content,
   }: CommentOnQuestionUseCaseRequest): Promise<CommentOnQuestionUseCaseResponse> {
-    const question = await this.questionRepository.findById(questionId)
+    const question = await this.questionsRepository.findById(questionId)
 
     if (!question) {
       return left(new ResourceNotFoundError())

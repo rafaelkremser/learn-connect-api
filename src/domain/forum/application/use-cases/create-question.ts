@@ -22,7 +22,7 @@ type CreateQuestionUseCaseResponse = Either<
 
 @Injectable()
 export class CreateQuestionUseCase {
-  constructor(private questionRepository: QuestionsRepository) {}
+  constructor(private questionsRepository: QuestionsRepository) {}
 
   async handle({
     authorId,
@@ -45,7 +45,7 @@ export class CreateQuestionUseCase {
 
     question.attachments = new QuestionAttachmentList(questionAttachments)
 
-    await this.questionRepository.create(question)
+    await this.questionsRepository.create(question)
 
     return right({ question })
   }
