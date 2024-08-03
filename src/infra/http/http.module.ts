@@ -11,13 +11,16 @@ import { CryptographyModule } from '../cryptography/cryptography.module'
 import { RegisterStudentUseCase } from '@/domain/forum/application/use-cases/register-student'
 import { GetQuestionBySlugUseCase } from '@/domain/forum/application/use-cases/get-question-by-slug'
 import { GetQuestionBySlugController } from './controllers/get-question-by-slug.controller'
+import { EditQuestionController } from './controllers/edit-question.controller'
+import { EditQuestionUseCase } from '@/domain/forum/application/use-cases/edit-question'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
   controllers: [
-    CreateAccountController,
     AuthenticateController,
+    CreateAccountController,
     CreateQuestionController,
+    EditQuestionController,
     FetchRecentQuestionsController,
     GetQuestionBySlugController,
   ],
@@ -25,6 +28,7 @@ import { GetQuestionBySlugController } from './controllers/get-question-by-slug.
     AuthenticateStudentUseCase,
     RegisterStudentUseCase,
     CreateQuestionUseCase,
+    EditQuestionUseCase,
     FetchRecentQuestionsUseCase,
     GetQuestionBySlugUseCase,
   ],
