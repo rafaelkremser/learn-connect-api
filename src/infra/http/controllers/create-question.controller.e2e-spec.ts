@@ -1,22 +1,27 @@
 import { AppModule } from '@/infra/app.module'
+import { DatabaseModule } from '@/infra/database/database.module'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
+import { StudentFactory } from 'test/factories/make-student'
 
 describe('Create Question (E2E)', () => {
   let app: INestApplication
+  let studentFactory: StudentFactory
   let prisma: PrismaService
   let jwt: JwtService
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, DatabaseModule],
+      providers: [StudentFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
 
+    studentFactory = moduleRef.get(StudentFactory)
     prisma = moduleRef.get(PrismaService)
     jwt = moduleRef.get(JwtService)
 
@@ -24,29 +29,23 @@ describe('Create Question (E2E)', () => {
   })
 
   test('[POST] /questions', async () => {
-    const user = await prisma.user.create({
-      data: {
-        name: 'Jonh Doe',
-        email: 'johndoe@email.com',
-        password: '123456',
-      },
-    })
+    const user = await studentFactory.makePrismaStudent()
 
-    const accessToken = jwt.sign({ sub: user.id })
+    const accessToken = jwt.sign({ sub: user.id.toString() })
 
     const response = await request(app.getHttpServer())
       .post('/questions')
       .auth(accessToken, { type: 'bearer' })
       .send({
-        title: 'New Question',
-        content: 'A new question for test',
+        title: 'Question 01',
+        content: 'A question for test',
       })
 
     expect(response.statusCode).toBe(201)
 
     const questionOnDatabase = await prisma.question.findFirst({
       where: {
-        slug: 'new-question',
+        slug: 'question-01',
       },
     })
 

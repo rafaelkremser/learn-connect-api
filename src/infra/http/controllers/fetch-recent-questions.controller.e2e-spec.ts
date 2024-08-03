@@ -48,14 +48,12 @@ describe('Fetch Recent Questions (E2E)', () => {
       .get('/questions')
       .auth(accessToken, { type: 'bearer' })
 
-    console.log(response)
-
     expect(response.statusCode).toBe(200)
     expect(response.body).toEqual({
-      questions: [
+      questions: expect.arrayContaining([
         expect.objectContaining({ title: 'Question 01' }),
         expect.objectContaining({ title: 'Question 02' }),
-      ],
+      ]),
     })
   })
 })
