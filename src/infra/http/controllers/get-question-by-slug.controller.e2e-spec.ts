@@ -39,16 +39,16 @@ describe('Get Question By Slug (E2E)', () => {
 
     await questionFactory.makePrismaQuestion({
       authorId: user.id,
-      title: 'New question',
+      title: 'Question 01',
     })
 
     const response = await request(app.getHttpServer())
-      .get('/questions/new-question')
+      .get('/questions/question-01')
       .auth(accessToken, { type: 'bearer' })
 
     expect(response.statusCode).toBe(200)
     expect(response.body).toEqual({
-      question: expect.objectContaining({ title: 'New question' }),
+      question: expect.objectContaining({ title: 'Question 01' }),
     })
   })
 })
