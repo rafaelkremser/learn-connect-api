@@ -40,20 +40,20 @@ describe('Delete Question (E2E)', () => {
       authorId: user.id,
     })
 
+    const questionId = createdQuestion.id.toString()
+
     const response = await request(app.getHttpServer())
-      .delete(`/questions/${createdQuestion.id}`)
-      .auth(accessToken, { type: 'bearer' })
+      .delete(`/questions/${questionId}`)
+      .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.statusCode).toBe(204)
 
-    console.log(response)
-
-    const questionOnDatabase = await prisma.question.findFirst({
+    const questionOnDatabase = await prisma.question.findUnique({
       where: {
-        title: 'New Update',
-        content: 'The question updated',
+        id: questionId,
       },
     })
-    expect(questionOnDatabase).toBeFalsy()
+
+    expect(questionOnDatabase).toBeNull()
   })
 })
