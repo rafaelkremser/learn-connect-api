@@ -15,10 +15,13 @@ import { EditQuestionController } from './controllers/edit-question.controller'
 import { EditQuestionUseCase } from '@/domain/forum/application/use-cases/edit-question'
 import { DeleteQuestionController } from './controllers/delete-question.controller'
 import { DeleteQuestionUseCase } from '@/domain/forum/application/use-cases/delete-question'
+import { AnswerQuestionUseCase } from '@/domain/forum/application/use-cases/answer-question'
+import { AnswerQuestionController } from './controllers/answer-question.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
   controllers: [
+    AnswerQuestionController,
     AuthenticateController,
     CreateAccountController,
     CreateQuestionController,
@@ -28,6 +31,7 @@ import { DeleteQuestionUseCase } from '@/domain/forum/application/use-cases/dele
     GetQuestionBySlugController,
   ],
   providers: [
+    AnswerQuestionUseCase,
     AuthenticateStudentUseCase,
     RegisterStudentUseCase,
     CreateQuestionUseCase,
