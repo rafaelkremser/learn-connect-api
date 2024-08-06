@@ -8,7 +8,7 @@ import request from 'supertest'
 import { DatabaseModule } from '@/infra/database/database.module'
 import { AnswerFactory } from 'test/factories/make-answer'
 
-describe('Fetch Recent Questions (E2E)', () => {
+describe('Fetch Question Answers (E2E)', () => {
   let app: INestApplication
   let studentFactory: StudentFactory
   let questionFactory: QuestionFactory
