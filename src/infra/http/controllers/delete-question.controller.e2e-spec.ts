@@ -31,7 +31,7 @@ describe('Delete Question (E2E)', () => {
     await app.init()
   })
 
-  test('[DELETE] /questions/:id', async () => {
+  test('[DELETE] /questions/:questionId/answers/:id', async () => {
     const user = await studentFactory.makePrismaStudent()
 
     const accessToken = jwt.sign({ sub: user.id.toString() })
