@@ -50,8 +50,25 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
   async create(question: Question) {
     const data = PrismaQuestionMapper.toPrisma(question)
 
+    await this.prisma.question.create({
+      data,
+    })
+
+    await this.questionAttachmentsRepository.createMany(
+      question.attachments.getItems()
+    )
+  }
+
+  async save(question: Question) {
+    const data = PrismaQuestionMapper.toPrisma(question)
+
     await Promise.all([
-      this.prisma.question.create({ data }),
+      this.prisma.question.update({
+        where: {
+          id: question.id.toString(),
+        },
+        data,
+      }),
       this.questionAttachmentsRepository.createMany(
         question.attachments.getNewItems()
       ),
@@ -59,15 +76,6 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
         question.attachments.getRemovedItems()
       ),
     ])
-  }
-
-  async save(question: Question) {
-    const data = PrismaQuestionMapper.toPrisma(question)
-
-    await this.prisma.question.update({
-      where: { id: data.id },
-      data,
-    })
   }
 
   async delete(question: Question) {
