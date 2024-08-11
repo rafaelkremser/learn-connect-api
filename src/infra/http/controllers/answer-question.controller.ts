@@ -14,6 +14,7 @@ import { z } from 'zod'
 
 const answerQuestionBodySchema = z.object({
   content: z.string(),
+  attachments: z.array(z.string().uuid()),
 })
 
 const bodyValidationPipe = new ZodValidationPipe(answerQuestionBodySchema)
@@ -25,20 +26,19 @@ export class AnswerQuestionController {
   constructor(private answerQuestion: AnswerQuestionUseCase) {}
 
   @Post()
-  @HttpCode(201)
   async handle(
     @Body(bodyValidationPipe) body: AnswerQuestionBodySchema,
     @Param('questionId') questionId: string,
     @CurrentUser() user: UserPayload
   ) {
-    const { content } = body
+    const { content, attachments } = body
     const userId = user.sub
 
     const result = await this.answerQuestion.handle({
       questionId,
       instructorId: userId,
       content,
-      attachmentsIds: [],
+      attachmentsIds: attachments,
     })
 
     if (result.isLeft()) {
