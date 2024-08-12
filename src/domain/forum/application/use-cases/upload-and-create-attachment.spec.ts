@@ -25,8 +25,6 @@ describe('Upload Attachment', () => {
       body: Buffer.from(''),
     })
 
-    console.log(result)
-
     expect(result.isRight()).toBe(true)
     expect(result.value).toEqual({
       attachment: inMemoryAttachmentsRepository.items[0],
