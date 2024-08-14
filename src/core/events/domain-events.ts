@@ -8,6 +8,8 @@ export class DomainEvents {
   private static handlersMap: Record<string, DomainEventCallback[]> = {}
   private static markedAggregates: AggregateRoot<unknown>[] = []
 
+  public static shouldRun = true
+
   public static markAggregateForDispatch(aggregate: AggregateRoot<unknown>) {
     const aggregateFound = !!this.findMarkedAggregateByID(aggregate.id)
 
@@ -21,7 +23,7 @@ export class DomainEvents {
   }
 
   private static removeAggregateFromMarkedDispatchList(
-    aggregate: AggregateRoot<unknown>,
+    aggregate: AggregateRoot<unknown>
   ) {
     const index = this.markedAggregates.findIndex((a) => a.equals(aggregate))
 
@@ -29,7 +31,7 @@ export class DomainEvents {
   }
 
   private static findMarkedAggregateByID(
-    id: UniqueEntityID,
+    id: UniqueEntityID
   ): AggregateRoot<unknown> | undefined {
     return this.markedAggregates.find((aggregate) => aggregate.id.equals(id))
   }
@@ -46,7 +48,7 @@ export class DomainEvents {
 
   public static register(
     callback: DomainEventCallback,
-    eventClassName: string,
+    eventClassName: string
   ) {
     const wasEventRegisteredBefore = eventClassName in this.handlersMap
 
@@ -69,6 +71,10 @@ export class DomainEvents {
     const eventClassName: string = event.constructor.name
 
     const isEventRegistered = eventClassName in this.handlersMap
+
+    if (!this.shouldRun) {
+      return
+    }
 
     if (isEventRegistered) {
       const handlers = this.handlersMap[eventClassName]
